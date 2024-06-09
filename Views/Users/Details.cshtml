@@ -1,0 +1,40 @@
+﻿@model UserListing.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="mb-5"><b>@Html.DisplayFor(model => model.first_name)</b></h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            First Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.first_name)
+        </dd>
+        <dt class="col-sm-2">
+            Last Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.last_name)
+        </dd>
+        <dt class="col-sm-2">
+            E-mail
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt class="col-sm-2">
+
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Html.DisplayFor(model => model.avatar)" />
+        </dd>
+    </dl>
+</div>
+<div>
+    @*     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> | *@
+    <a style="text-decoration:none;" asp-action="Index"><button type="submit" class="btn btn-outline-dark">Back to List</button></a>
+</div>
