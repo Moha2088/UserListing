@@ -30,25 +30,15 @@ namespace UserListing.Controllers
         async Task GetUserData()
         {
             using var client = new HttpClient();
-            var firstEndpoint = new Uri("https://reqres.in/api/users?page");
-            var secondEndpoint = new Uri("https://reqres.in/api/users?page=2");
-
-            var firstResponse = await client.GetAsync(firstEndpoint);
-            var secondResponse = await client.GetAsync(secondEndpoint);
-
-            firstResponse.EnsureSuccessStatusCode();
-            secondResponse.EnsureSuccessStatusCode();
+            var endpoint = new Uri("https://reqres.in/api/users?per_page=12¨");
+            var response = await client.GetAsync(endpoint);
+            response.EnsureSuccessStatusCode();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var deserializedObject = JsonSerializer.Deserialize<Rootobject>(jsonResponse);
             
-            var firstJsonResponse = await firstResponse.Content.ReadAsStringAsync();
-            var secondJsonResponse = await secondResponse.Content.ReadAsStringAsync();
-            
-            var firstDeserializedObject = JsonSerializer.Deserialize<Rootobject>(firstJsonResponse);
-            var secondDeserializedObject = JsonSerializer.Deserialize<Rootobject>(secondJsonResponse);
-
-            if (firstDeserializedObject != null && secondDeserializedObject != null)
+            if (deserializedObject != null)
             {
-                List<User> userList = firstDeserializedObject.data.ToList();
-                userList.AddRange(secondDeserializedObject.data);
+                List<User> userList = deserializedObject.data.ToList();
                 userList.ForEach(user => user.Id = 0);
                 await _context.User.AddRangeAsync(userList);
                 await _context.SaveChangesAsync();
